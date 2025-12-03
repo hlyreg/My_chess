@@ -4,12 +4,12 @@ public class Point {
     private int x;
     private int y;
     private boolean takes;
-    public Point(int x, int y){
+    public Point(int y, int x){
         this.x = x;
         this.y = y;
         takes = false;
     }
-    public Point(int x, int y, boolean takes){
+    public Point(int y, int x, boolean takes){
         this.x = x;
         this.y = y;
         this.takes = takes;
