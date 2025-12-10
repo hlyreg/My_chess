@@ -14,7 +14,9 @@ public abstract class Piece {
         this.player = player;
         this.isAlive = true;
     }
-    public abstract List<Point> getMoves( Board board);
+    public abstract List<Point> getMoves( Board board, boolean trigger);
+
+    public abstract void move(Point newPlace);
 
     public void kill(){
         this.isAlive = false;
