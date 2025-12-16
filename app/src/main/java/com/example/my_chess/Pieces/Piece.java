@@ -25,4 +25,10 @@ public abstract class Piece {
     public boolean isEmpty(String[][] board, int y, int x){
         return board[y][x].equals("-");
     }
+
+    public boolean isComrade(String[][] board, int y, int x){
+        String my_player = ""+this.player;
+        String piece = board[y][x];
+        return my_player.equals(""+piece.charAt(piece.length()-1));
+    }
 }

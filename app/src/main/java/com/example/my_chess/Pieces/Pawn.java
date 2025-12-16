@@ -21,58 +21,61 @@ public class Pawn extends Piece {
         String[][] board = current_board.getBoard();
         List<Point> moves = new ArrayList<>();
 //_______________________________White_______________________________________________
-
-        if(moved == 0 && this.player == 0 && isEmpty(board, 2, x)){  // if this is the pawn's first move and the player is white, check if it can move forward once and twice.
-            moves.add(new Point(y++, x));
-            if(isEmpty(board, 3, x))
-                moves.add(new Point(y+2, x, false, true));
-        }
         if(y++ < 8) {
+
+            if(moved == 0 && this.player == 0 && isEmpty(board, 2, x)){  // if this is the pawn's first move and the player is white, check if it can move forward once and twice.
+                moves.add(new Point(y++, x));
+                if(isEmpty(board, 3, x))
+                    moves.add(new Point(y+2, x, false, true));
+            }
+
             if (this.player == 0 && isEmpty(board, y++, x))  // check if it can move forward once as white.
                 moves.add(new Point(y++, x));
 
-            if (this.player == 0 && x++ < 8) {       // check if white can take a piece
-                if (!isEmpty(board, y++, x++)) {
-                    moves.add(new Point(y++, x++, true));
-                }
-                if (x-- >= 0 && !isEmpty(board, y++, x--)) {
-                    moves.add(new Point(y++, x--, true));
-                }
-            }
+            if (this.player == 0 && x++ < 8 && !isEmpty(board, y++, x++) && !isComrade(board, y++, x++))        // check if white can take a piece
+                moves.add(new Point(y++, x++, true));
 
-            if(this.player == 0 && place.getY() == 4 && x++ < 8 && board[4][x++].equals("Pawn-1") && is_twice)      // check if un poissant is possible
+
+            if (this.player == 0 && x-- >= 0 && !isEmpty(board, y++, x--)  &&  !isComrade(board, y++, x--))
+                moves.add(new Point(y++, x--, true));
+
+
+
+            if(this.player == 0 && board[4][x++].equals("Pawn-1")&& place.getY() == 4 && x++ < 8 && is_twice)      // check if un poissant is possible
                 moves.add(new Point(5, x++, true));
-            if(this.player == 0 && place.getY() == 4 && x-- >= 0 && board[4][x--].equals("Pawn-1") && is_twice)
+
+            if(this.player == 0 && board[4][x--].equals("Pawn-1") && place.getY() == 4 && x-- >= 0  && is_twice)     // if the player is white, opponent is black and a pawn, whit is in the right placement and opponent just moved twice
                 moves.add(new Point(5, x--, true));
         }
 
 //_________________________________Black________________________________________
 
-        if(moved == 0 && this.player == 1 && isEmpty(board, 5, x)){  // if this is the pawn's first move and the player is black, check if it can move forward once and twice.
-            moves.add(new Point(y--, x));
-            if(isEmpty(board, 4, x))
-                moves.add(new Point(y-2, x, false, true));
-        }
-
         if(y-- >= 0) {
+
+            if(moved == 0 && this.player == 1 && isEmpty(board, 5, x)){  // if this is the pawn's first move and the player is black, check if it can move forward once and twice.
+                moves.add(new Point(y--, x));
+                if(isEmpty(board, 4, x))
+                    moves.add(new Point(y-2, x, false, true));
+            }
+
             if (this.player == 1 && isEmpty(board, y--, x))  // check if it can move forward once as black.
                 moves.add(new Point(y--, x));
 
 
-            if (this.player == 1 && x++ < 8) {       // check if black can take a piece
-                if (!isEmpty(board, y--, x++))
-                    moves.add(new Point(y--, x++, true));
-
-                if (x-- >= 0 && !isEmpty(board, y--, x--))
-                    moves.add(new Point(y--, x--, true));
+            if (this.player == 1 && x++ < 8 && !isEmpty(board, y--, x++)  &&  !isComrade(board, y--, x++))        // check if black can take a piece
+                moves.add(new Point(y--, x++, true));
 
 
-                if(this.player == 1 && place.getY() == 3 && x++ < 8 && board[3][x++].equals("Pawn-0") && is_twice)      // check if un poissant is possible
-                    moves.add(new Point(2, x++, true));
+            if (this.player == 1 && x-- >= 0 && !isEmpty(board, y--, x--) && !isComrade(board, y--, x--))
+                moves.add(new Point(y--, x--, true));
 
-                if(this.player == 1 && place.getY() == 3 && x-- >= 0 && board[3][x--].equals("Pawn-0") && is_twice)
-                    moves.add(new Point(2, x--, true));
-            }
+
+            if(this.player == 1 && place.getY() == 3 && x++ < 8 && board[3][x++].equals("Pawn-0") && is_twice)      // check if un poissant is possible
+                moves.add(new Point(2, x++, true));
+
+            if(this.player == 1 && place.getY() == 3 && x-- >= 0 && board[3][x--].equals("Pawn-0") && is_twice)
+                moves.add(new Point(2, x--, true));
+
 
         }
 

@@ -1,5 +1,7 @@
 package com.example.my_chess.Game;
 
+import com.example.my_chess.Pieces.Point;
+
 public class Board {
     private String[][] board;
 
@@ -33,6 +35,17 @@ public class Board {
         board[7][3] = "Queen-1";
         board[0][4] = "King-0";
         board[7][4] = "King-1";
+    }
+
+    public Board(Board current_board, Point current, Point change){    // a constructor to make a new board with a change in position because of a move that was made
+        for(int y = 0; y < 8; y++){    // copying the original board
+            for(int x = 0; x < 8; x++){
+                this.board[y][x] = current_board.getBoard()[y][x];
+            }
+        }
+        // adding the change in position
+        this.board[change.getY()][change.getX()] = this.board[current.getY()][current.getX()];
+        this.board[current.getY()][current.getX()] = "-";
     }
 
     public String[][] getBoard(){
