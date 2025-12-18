@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rook extends Piece{
-    private boolean moved;  //for castling
+    public boolean moved;  //for castling
 
     public Rook(Point place, int colour, Player player, int ID){
         super(place, colour, player, ID);
@@ -21,56 +21,15 @@ public class Rook extends Piece{
         String[][] board = current_board.getBoard();
         List<Point> moves = new ArrayList<>();
 
-//___________________________UP_______________________________________________
-        int tryY = y++;
+//_________________________________________________________________________
 
-        //run till you hit something (edge or piece)
-        while(tryY < 8 && isEmpty(board, tryY, x) &&
-                !isCheck(opponent, this.ID, new Point(tryY, x), current_board)){
-            moves.add(new Point(tryY, x));
-            tryY++;
-        }
-        // if it's not an edge that was hit, check if it is an opponent piece that can be taken
-        if(tryY < 8 && !isComrade(board, tryY, x) &&
-                !isCheck(opponent, this.ID, new Point(tryY, x, true), current_board))
-            moves.add(new Point(tryY, x, true));
+        moves.addAll(this.continueDirection(0,1, current_board, opponent));     //UP
 
-//__________________________Left____________________________________________
+        moves.addAll(this.continueDirection(0,-1, current_board, opponent));    //DOWN
 
-        int tryX = x--;
+        moves.addAll(this.continueDirection(-1,0, current_board, opponent));    //LEFT
 
-        while(tryX >= 0 && isEmpty(board, y, tryX) &&
-                !isCheck(opponent, this.ID, new Point(y, tryX), current_board)){
-            moves.add(new Point(y, tryX));
-            tryX--;
-        }
-        if(tryX >= 0 &&!isComrade(board, y, tryX) &&
-                !isCheck(opponent, this.ID, new Point(y, tryX, true), current_board))
-            moves.add(new Point(y, tryX, true));
-
-//__________________________Down___________________________________________
-
-        tryY = y--;
-        while(tryY >= 0 && isEmpty(board, tryY, x) &&
-                !isCheck(opponent, this.ID, new Point(tryY, x), current_board)){
-            moves.add(new Point(tryY, x));
-            tryY--;
-        }
-        if(tryY >= 0 && !isComrade(board, tryY, x) &&
-                !isCheck(opponent, this.ID, new Point(tryY, x, true), current_board))
-            moves.add(new Point(tryY, x, true));
-
-//____________________________Right______________________________________
-
-        tryX = x++;
-        while(tryX < 8 && isEmpty(board, y, tryX) &&
-                !isCheck(opponent, this.ID, new Point(y, tryX), current_board)){
-            moves.add(new Point(y, tryX));
-            tryX++;
-        }
-        if(tryX < 8 &&  !isComrade(board, y, tryX) &&
-                !isCheck(opponent, this.ID, new Point(y, tryX, true), current_board))
-            moves.add(new Point(y, tryX, true));
+        moves.addAll(this.continueDirection(1,0, current_board, opponent));     //RIGHT
 //_______________________________________________________________________________
 
 
@@ -82,11 +41,20 @@ public class Rook extends Piece{
         this.place = newPlace;
         this.moved = true;
     }
-    public void castling(Board board){  //!!!!!!!!!!!!!!!!!!! - after the King do this
-        /*if(!this.moved){
 
-        }*/
+    public boolean getMoved(){
+        return this.moved;
+    }
 
+    public Point castling(){  //!!!!!!!!!!!!!!!!!!! - after the King do this
+        if(this.place.compare(this.place.getY(), 7)) {
+            this.place = new Point(this.place.getY(), 5);
+            return this.place;
+        }
+        else{
+            this.place = new Point(this.place.getY(), 2);
+            return this.place;
+        }
     }
 
 }

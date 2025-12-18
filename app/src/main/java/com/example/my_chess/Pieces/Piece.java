@@ -58,6 +58,30 @@ public abstract class Piece {
 
     }
 
+    protected List<Point> continueDirection(int deltaX, int deltaY, Board current_board, Player opponent){      // a function that return the amount of places available, when going in a certain direction
+        int x = this.place.getX();
+        int y = this.place.getY();
+        String[][] board = current_board.getBoard();
+        List<Point> moves = new ArrayList<>();
+
+        // delta x and y represent the distance being made, fore example - (1, 1) will head to the top right.
+        int tryX = x + deltaX;
+        int tryY = y + deltaY;
+        //run till you hit something (edge or piece)
+        while(tryX < 8 && tryY < 8 && tryX >= 0 && tryY >= 0 && isEmpty(board, tryY, tryX) &&
+                !isCheck(opponent, this.ID, new Point(tryY, tryX), current_board)){
+            moves.add(new Point(tryY, tryX));
+            tryX += deltaX;
+            tryY += deltaY;
+        }
+        // if it's not an edge that was hit, check if it is an opponent piece that can be taken
+        if(tryX < 8 && tryY < 8 && tryX >= 0 && tryY >= 0 && !isComrade(board, tryY, tryX) &&
+                !isCheck(opponent, this.ID, new Point(tryY, tryX, true), current_board))
+            moves.add(new Point(tryY, tryX, true));
+
+        return moves;
+    }
+
     public Point getPlace(){
         return this.place;
     }

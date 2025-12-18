@@ -19,62 +19,15 @@ public class Bishop extends Piece{
         String[][] board = current_board.getBoard();
         List<Point> moves = new ArrayList<>();
 
-//_________________________top right_______________________________________________
-        int tryX = x++;
-        int tryY = y++;
-        //run till you hit something (edge or piece)
-        while(tryX < 8 && tryY < 8 && isEmpty(board, tryY, tryX) &&
-                !isCheck(opponent, this.ID, new Point(tryY, tryX), current_board)){
-            moves.add(new Point(tryY, tryX));
-            tryX++;
-            tryY++;
-        }
-        // if it's not an edge that was hit, check if it is an opponent piece that can be taken
-        if(tryX < 8 && tryY < 8 && !isComrade(board, tryY, tryX) &&
-                !isCheck(opponent, this.ID, new Point(tryY, tryX, true), current_board))
-            moves.add(new Point(tryY, tryX, true));
+//________________________________________________________________________
 
-//__________________________top left____________________________________________
+        moves.addAll(this.continueDirection(1,1, current_board, opponent));  //top right
 
-        tryX = x--;
-        tryY = y++;
-        while(tryX >= 0 && tryY < 8 && isEmpty(board, tryY, tryX) &&
-                !isCheck(opponent, this.ID, new Point(tryY, tryX), current_board)){
-            moves.add(new Point(tryY, tryX));
-            tryX--;
-            tryY++;
-        }
-        if(tryX >= 0 && tryY < 8 && !isComrade(board, tryY, tryX) &&
-                !isCheck(opponent, this.ID, new Point(tryY, tryX, true), current_board))
-            moves.add(new Point(tryY, tryX, true));
+        moves.addAll(this.continueDirection(-1,1, current_board, opponent));   //top left
 
-//__________________________bottom left___________________________________________
+        moves.addAll(this.continueDirection(-1,-1, current_board, opponent));   //bottom left
 
-        tryX = x--;
-        tryY = y--;
-        while(tryX >= 0 && tryY >= 0 && isEmpty(board, tryY, tryX) &&
-                !isCheck(opponent, this.ID, new Point(tryY, tryX), current_board)){
-            moves.add(new Point(tryY, tryX));
-            tryX--;
-            tryY--;
-        }
-        if(tryX >= 0 && tryY >= 0 && !isComrade(board, tryY, tryX) &&
-                !isCheck(opponent, this.ID, new Point(tryY, tryX, true), current_board))
-            moves.add(new Point(tryY, tryX, true));
-
-//____________________________bottom right_____________________________
-
-        tryX = x++;
-        tryY = y--;
-        while(tryX < 8 && tryY >= 0 && isEmpty(board, tryY, tryX) &&
-                !isCheck(opponent, this.ID, new Point(tryY, tryX), current_board)){
-            moves.add(new Point(tryY, tryX));
-            tryX++;
-            tryY--;
-        }
-        if(tryX < 8 && tryY >= 0 && !isComrade(board, tryY, tryX) &&
-                !isCheck(opponent, this.ID, new Point(tryY, tryX, true), current_board))
-            moves.add(new Point(tryY, tryX, true));
+        moves.addAll(this.continueDirection(1,-1, current_board, opponent));    //bottom right
 
 //___________________________________________________________________________
 
